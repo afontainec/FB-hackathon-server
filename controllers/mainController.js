@@ -4,6 +4,8 @@ const fs = require('fs');
 const spawn = require('child_process').spawnSync;
 
 
+const
+
 exports.convetAudioToText = function (req, res) {
   // create an incoming form object
   const form = new formidable.IncomingForm();
@@ -11,7 +13,7 @@ exports.convetAudioToText = function (req, res) {
   // // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
   // store all uploads in the /uploads directory
-  form.uploadDir = path.join(__dirname, '../', '/uploads');
+  form.uploadDir = path.join(__dirname, '../', '/uploads/opus');
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
@@ -38,9 +40,11 @@ exports.convetAudioToText = function (req, res) {
 
 
 function convertFileToFlac(filename) {
-  const route = '/Users/antonio/Documents/facebook-hackaton/FB-hackathon-server/';
-  const ls = spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${filename}.opus`, `${route}/uploads/${filename}.wav`]);
+  const route = '/Users/Carlos/Desktop/FB-hackathon-server/';
+  const folder_ouput = 'wav/';
+  const folder_input = 'opus/'
+  const opusdec = spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${folder_input}${filename}.opus`, `${route}/uploads/${folder_ouput}${filename}.wav`]);
 
-  console.log(`stdout: ${ls.stdout.toString()}`);
-  console.log(`stdout: ${ls.stderr.toString()}`);
+  console.log(`${opusdec.stdout.toString()}`);
+  console.log(`${opusdec.stderr.toString()}`);
 }
