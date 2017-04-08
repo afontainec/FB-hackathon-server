@@ -3,9 +3,6 @@ const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawnSync;
 
-
-const
-
 exports.convetAudioToText = function (req, res) {
   // create an incoming form object
   const form = new formidable.IncomingForm();
