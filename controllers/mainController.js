@@ -56,7 +56,7 @@ function convertToText(wavfile, res) {
   });
 
     // The name of the audio file to transcribe
-  const fileName = `${route}uploads/${wavfile}`;
+  const fileName = `${route}uploads/wav/${wavfile}`;
 
 
   const options = {
