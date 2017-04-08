@@ -2,6 +2,9 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawnSync;
+const Speech = require('@google-cloud/speech');
+
+const route = '/Users/antonio/Documents/facebook-hackaton/FB-hackathon-server/';
 
 
 exports.convetAudioToText = function (req, res) {
@@ -28,8 +31,8 @@ exports.convetAudioToText = function (req, res) {
 
   // once all the files have been uploaded, send a response to the client
   form.on('end', () => {
-    convertFileToFlac(filename);
-    res.end('success');
+    const wavfile = convertFileToWav(filename);
+    convertToText(wavfile, res);
   });
 
   // parse the incoming request containing the form data
@@ -37,10 +40,39 @@ exports.convetAudioToText = function (req, res) {
 };
 
 
-function convertFileToFlac(filename) {
-  const route = '/Users/antonio/Documents/facebook-hackaton/FB-hackathon-server/';
-  const ls = spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${filename}.opus`, `${route}/uploads/${filename}.wav`]);
+function convertFileToWav(filename) {
+  spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${filename}.opus`, `${route}/uploads/${filename}.wav`]);
+  return `${filename}.wav`;
+}
 
-  console.log(`stdout: ${ls.stdout.toString()}`);
-  console.log(`stdout: ${ls.stderr.toString()}`);
+function convertToText(wavfile, res) {
+  // Your Google Cloud Platform project ID
+  const projectId = 'a59e2f4f7fb16a45a5d6eca69bde21d63ce202ef';
+
+  // Instantiates a client
+  const speechClient = Speech({ //eslint-disable-line
+    projectId,
+  });
+
+    // The name of the audio file to transcribe
+  const fileName = `${route}uploads/${wavfile}`;
+
+
+  const options = {
+    encoding: 'LINEAR16',
+    // languageCode: 'es-CL'
+  };
+
+
+  // Detects speech in the audio file
+  speechClient.recognize(fileName, options)
+    .then((results) => {
+      const transcription = results[0];
+      console.log(`Transcription: ${transcription}`);
+      res.end(transcription);
+      return transcription;
+    }).catch((err) => {
+      console.log('hubo un error');
+      console.log(err);
+    });
 }
