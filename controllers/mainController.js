@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 const path = require('path');
-
+const fs = require('fs');
 
 exports.convetAudioToText = function (req, res) {
   // create an incoming form object
@@ -14,7 +14,8 @@ exports.convetAudioToText = function (req, res) {
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', (field, file) => {
-    console.log(file.name);
+    // fs.rename(file.path, path.join(__dirname, '../', `/${new Date().getTime()}.opus`));
+    fs.rename(file.path, path.join(form.uploadDir, `${new Date().getTime()}.opus`));
   });
 
   // log any errors that occur
@@ -24,6 +25,7 @@ exports.convetAudioToText = function (req, res) {
 
   // once all the files have been uploaded, send a response to the client
   form.on('end', () => {
+    console.log(form);
     res.end('success');
   });
 
