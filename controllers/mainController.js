@@ -6,7 +6,6 @@ const Speech = require('@google-cloud/speech');
 
 const route = '/Users/antonio/Documents/facebook-hackaton/FB-hackathon-server/';
 
-
 exports.convetAudioToText = function (req, res) {
   // create an incoming form object
   const form = new formidable.IncomingForm();
@@ -14,7 +13,7 @@ exports.convetAudioToText = function (req, res) {
   // // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
   // store all uploads in the /uploads directory
-  form.uploadDir = path.join(__dirname, '../', '/uploads');
+  form.uploadDir = path.join(__dirname, '../', '/uploads/opus');
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
@@ -41,7 +40,9 @@ exports.convetAudioToText = function (req, res) {
 
 
 function convertFileToWav(filename) {
-  spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${filename}.opus`, `${route}/uploads/${filename}.wav`]);
+  const folder_ouput = 'wav/';
+  const folder_input = 'opus/';
+  spawn(`${route}opus-tools-0.1.9/opusdec`, [`${route}uploads/${folder_input}${filename}.opus`, `${route}/uploads/${folder_ouput}${filename}.wav`]);
   return `${filename}.wav`;
 }
 
