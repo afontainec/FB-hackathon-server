@@ -23,7 +23,7 @@ $('#upload-input').on('change', function () {
     }
 
     $.ajax({
-      url: 'http://localhost:3000/convert',
+      url: 'http://ec2-54-207-100-233.sa-east-1.compute.amazonaws.com:3000/convert',
       type: 'POST',
       data: formData,
       processData: false,
