@@ -1,6 +1,13 @@
 const express = require('express');
+const mainController = require('../controllers/mainController');
 
 const router = express.Router(); //eslint-disable-line
+
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -8,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/convert', (req, res) => {
-  console.log(req);
+  mainController.convetAudioToText(req, res);
 });
 
 module.exports = router;
