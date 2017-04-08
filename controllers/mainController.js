@@ -4,7 +4,7 @@ const fs = require('fs');
 const spawn = require('child_process').spawnSync;
 const Speech = require('@google-cloud/speech');
 
-const route = '/Users/antonio/Documents/facebook-hackaton/FB-hackathon-server/';
+const route = '/home/ubuntu/FB-hackathon-server/';
 
 exports.convetAudioToText = function (req, res) {
   // create an incoming form object
