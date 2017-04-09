@@ -31,7 +31,7 @@ exports.convetAudioToText = function (req, res) {
   // once all the files have been uploaded, send a response to the client
   form.on('end', () => {
     const wavfile = convertFileToWav(filename);
-    convertToText(wavfile, res);
+    convertToText(wavfile, req, res);
   });
 
   // parse the incoming request containing the form data
@@ -46,7 +46,8 @@ function convertFileToWav(filename) {
   return `${filename}.wav`;
 }
 
-function convertToText(wavfile, res) {
+function convertToText(wavfile, req, res) {
+  const languageCode = req.params.language;
   // Your Google Cloud Platform project ID
   const projectId = 'a59e2f4f7fb16a45a5d6eca69bde21d63ce202ef';
 
@@ -61,7 +62,7 @@ function convertToText(wavfile, res) {
 
   const options = {
     encoding: 'LINEAR16',
-    // languageCode: 'es-CL'
+    languageCode,
   };
 
 
