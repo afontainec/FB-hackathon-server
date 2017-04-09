@@ -24,6 +24,7 @@ $('#upload-input').on('change', function () {
 
     $.ajax({
       url: 'http://localhost:3000/convert/en-IN',
+
       type: 'POST',
       data: formData,
       processData: false,
