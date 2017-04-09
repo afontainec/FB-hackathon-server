@@ -74,7 +74,7 @@ function convertToText(wavfile, req, res) {
       res.end(transcription);
       return transcription;
     }).catch((err) => {
-      console.log('hubo un error');
+      console.log('[!] Hubo un error');
       console.log(err);
     });
 }
