@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/convert', (req, res) => {
+router.post('/convert/:language', (req, res) => {
   mainController.convertAudioToText(req, res);
 });
 

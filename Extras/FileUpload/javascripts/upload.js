@@ -23,7 +23,7 @@ $('#upload-input').on('change', function () {
     }
 
     $.ajax({
-      url: 'http://0.0.0.0:3000/convert',
+      url: 'http://0.0.0.0:3000/convert/en-IN',
       type: 'POST',
       data: formData,
       processData: false,

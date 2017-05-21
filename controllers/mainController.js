@@ -12,34 +12,32 @@ const dec_command = 'Extras/OpusTools/opusdec';
 const output_ext = '.wav'
 
 exports.convertAudioToText = function (req, res) {
-  // create an incoming form object
   const form = new formidable.IncomingForm();
 
-  // // specify that we want to allow the user to upload multiple files in a single request
-  form.multiples = true;
-  // store all uploads in the /uploads directory
-  form.uploadDir = path.join(__dirname, '../', '/Extras/uploads/opus');
+  // Allow the user to upload multiple files in a single request
+  form.multiples = false;
 
-  // every time a file has been uploaded successfully,
-  // rename it to it's orignal name
+  // Store all uploads in the folder_input directory
+  form.uploadDir = path.join(__dirname, '../', `${folder_input}`);
+
+  // Every time a file has been uploaded successfully, rename it to it's orignal name
   const filename = `${new Date().getTime()}`;
   form.on('file', (field, file) => {
     fs.rename(file.path, path.join(form.uploadDir, `${filename}.opus`));
   });
 
-  // log any errors that occur
+  // Log any errors that occur
   form.on('error', (err) => {
     console.log(`An error has occured: \n${err}`);
   });
 
-  // once all the files have been uploaded, send a response to the client
+  // Once the file had been uploaded, send a response to the client
   form.on('end', () => {
     const wavfile = convertFileToWav(filename);
-    console.log(' [!] Opus File Transform to .Wav')
-    convertToText(wavfile, res);
+    convertToText(wavfile, req, res);
   });
 
-  // parse the incoming request containing the form data
+  // Parse the incoming request containing the form data
   form.parse(req);
 };
 
@@ -51,9 +49,10 @@ function convertFileToWav(filename) {
   return `${filename}`;
 }
 
-function convertToText(wavfile, res) {
+function convertToText(wavfile, req, res) {
   // Your Google Cloud Platform project ID
   const projectId = process.env.PROJECT_ID;
+  const languageCode = req.params.language;
 
   // Instantiates a client
   const speechClient = Speech({
@@ -67,7 +66,7 @@ function convertToText(wavfile, res) {
 
   const options = {
     encoding: 'LINEAR16',
-    // languageCode: 'es-CL'
+    // languageCode,
   };
 
 
