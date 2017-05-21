@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/convert', (req, res) => {
-  mainController.convetAudioToText(req, res);
+  mainController.convertAudioToText(req, res);
 });
 
 module.exports = router;
